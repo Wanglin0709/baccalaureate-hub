@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة المنهاج السوري الشاملة - بكالوريا علمي</title>
+    <title>الحقيبة الرقمية للبكالوريا السورية</title>
     <style>
         :root {
             --bg-main: #f4f6f9;
@@ -12,7 +12,6 @@
             --text-secondary: #5a6c7d;
             --accent: #2980b9;
             --accent-hover: #3498db;
-            --success: #27ae60;
             --border: #e2e8f0;
             --shadow: rgba(0, 0, 0, 0.05);
         }
@@ -24,15 +23,11 @@
             --text-secondary: #94a3b8;
             --accent: #38bdf8;
             --accent-hover: #7dd3fc;
-            --success: #4ade80;
             --border: #334155;
             --shadow: rgba(0, 0, 0, 0.3);
         }
 
-        * {
-            box-sizing: border-box;
-            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -53,41 +48,35 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
-        .header-title h1 { margin: 0; font-size: 21px; }
+        .header-title h1 { margin: 0; font-size: 22px; }
         .header-title p { margin: 5px 0 0 0; font-size: 13px; color: var(--text-secondary); }
-        .controls { display: flex; gap: 10px; align-items: center; }
+
+        .controls { display: flex; gap: 10px; }
 
         button {
             cursor: pointer;
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: 6px;
             border: 1px solid var(--border);
             background-color: var(--bg-card);
             color: var(--text-primary);
             font-weight: 600;
             font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
-        button:hover { background-color: var(--border); }
+
         .btn-accent { background-color: var(--accent); color: white; border: none; }
         .btn-accent:hover { background-color: var(--accent-hover); }
 
         .container {
             display: grid;
-            grid-template-columns: 1fr 350px;
+            grid-template-columns: 1fr 340px;
             gap: 20px;
             padding: 20px;
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
-            flex-grow: 1;
         }
 
         @media (max-width: 1024px) {
@@ -107,43 +96,68 @@
         .card-title {
             font-size: 17px;
             font-weight: bold;
-            margin-top: 0;
             margin-bottom: 15px;
             border-bottom: 2px solid var(--border);
             padding-bottom: 8px;
             color: var(--accent);
         }
 
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
+        .book-card { border-right: 4px solid var(--accent); background-color: var(--bg-card); }
+        
+        .book-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .book-btn { width: 100%; text-align: right; background-color: var(--bg-main); border: 1px solid var(--border); }
+        .book-btn:hover { background-color: var(--border); }
+
+        /* Integrated PDF Box Viewport */
+        .viewer-container {
+            display: none;
+            flex-direction: column;
+            height: 650px;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .viewer-header {
+            background-color: var(--bg-card);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .viewer-frame { width: 100%; height: 100%; border: none; }
+
+        /* Countdown Widget */
         .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
         .countdown-box { background-color: var(--bg-main); padding: 10px 5px; border-radius: 8px; border: 1px solid var(--border); }
-        .countdown-num { font-size: 22px; font-weight: bold; display: block; color: var(--text-primary); }
+        .countdown-num { font-size: 20px; font-weight: bold; display: block; }
         .countdown-label { font-size: 11px; color: var(--text-secondary); }
 
-        .books-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
-        .book-card { border-right: 4px solid var(--accent); }
-        .book-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-        .book-btn { justify-content: space-between; font-size: 13px; padding: 10px; width: 100%; }
-
-        .timer-display { font-size: 42px; font-weight: bold; text-align: center; margin: 10px 0; font-family: monospace; }
+        /* Pomodoro Timer */
+        .timer-display { font-size: 38px; font-weight: bold; text-align: center; margin: 10px 0; font-family: monospace; }
         .timer-buttons { display: flex; justify-content: center; gap: 8px; }
 
+        /* Scratch Notepad Area */
+        .notes-area { width: 100%; height: 150px; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background-color: var(--bg-main); color: var(--text-primary); resize: none; font-size: 14px; }
+        
+        /* Interactive Daily Goals Checklist */
         .todo-input-group { display: flex; gap: 8px; margin-bottom: 12px; }
-        .todo-input-group input { flex-grow: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background-color: var(--bg-main); color: var(--text-primary); font-size: 14px; }
-        .todo-list { list-style: none; padding: 0; margin: 0; max-height: 180px; overflow-y: auto; }
-        .todo-item { display: flex; align-items: center; gap: 10px; padding: 8px 5px; border-bottom: 1px solid var(--border); font-size: 14px; }
-        .todo-item.completed span { text-decoration: line-through; color: var(--text-secondary); opacity: 0.6; }
+        .todo-input-group input { flex-grow: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background-color: var(--bg-main); color: var(--text-primary); }
+        .todo-list { list-style: none; padding: 0; margin: 0; max-height: 150px; overflow-y: auto; }
+        .todo-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+        .todo-item.completed span { text-decoration: line-through; opacity: 0.5; }
 
-        .flashcard-container { perspective: 1000px; width: 100%; height: 160px; margin-bottom: 12px; cursor: pointer; }
-        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.4s ease; }
+        /* Active Recall Cards */
+        .flashcard-container { perspective: 1000px; width: 100%; height: 130px; margin-bottom: 12px; cursor: pointer; }
+        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.4s; }
         .flashcard.flipped { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 20px; border-radius: 10px; border: 1px solid var(--border); text-align: center; font-size: 14px; font-weight: 500; }
-        .card-front { background-color: var(--bg-main); color: var(--text-primary); }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 15px; border-radius: 8px; border: 1px solid var(--border); text-align: center; font-size: 14px; }
+        .card-front { background-color: var(--bg-main); }
         .card-back { background-color: var(--accent); color: white; transform: rotateY(180deg); }
-
-        .viewer-container { display: none; flex-direction: column; height: 680px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 12px var(--shadow); }
-        .viewer-header { background-color: var(--bg-card); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-        .viewer-frame { width: 100%; height: 100%; border: none; background-color: #525659; }
-        .notes-area { width: 100%; height: 160px; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background-color: var(--bg-main); color: var(--text-primary); resize: none; font-family: inherit; font-size: 14px; line-height: 1.5; }
     </style>
 </head>
 <body data-theme="light">
@@ -151,7 +165,7 @@
     <header>
         <div class="header-title">
             <h1 id="app-title">الحقيبة الرقمية للبكالوريا العلمية</h1>
-            <p id="app-subtitle">منصة الدراسة الذاتية وإدارة الموارد دون اتصال بالإنترنت</p>
+            <p id="app-subtitle">منصة الدراسة الذاتية المفتوحة وإدارة الموارد</p>
         </div>
         <div class="controls">
             <button id="lang-toggle" onclick="toggleLanguage()">🌐 English</button>
@@ -161,6 +175,7 @@
 
     <div class="container">
         <div class="main-content">
+            <!-- Dynamic Embedded PDF Frame -->
             <div id="pdf-viewer-section" class="viewer-container">
                 <div class="viewer-header">
                     <span id="current-document-title" style="font-weight: bold;">اسم المستند النشط</span>
@@ -175,11 +190,11 @@
             </div>
 
             <div class="card">
-                <div class="card-title" id="title-flashcards">بطاقات التذكر النشط (تثبيت الحفظ والمفاهيم)</div>
+                <div class="card-title" id="title-flashcards">بطاقات التذكر النشط (تثبيت المفاهيم)</div>
                 <div class="flashcard-container" onclick="toggleFlashcardCard()">
                     <div class="flashcard" id="flashcard-object">
-                        <div class="card-front" id="fc-front">تحميل السؤال...</div>
-                        <div class="card-back" id="fc-back">تحميل الجواب...</div>
+                        <div class="card-front" id="fc-front">تحميل المفهوم العلمي...</div>
+                        <div class="card-back" id="fc-back">تحميل الشرح المرجعي...</div>
                     </div>
                 </div>
                 <div style="display:flex; justify-content: space-between; align-items:center;">
@@ -202,3 +217,5 @@
 
             <div class="card">
                 <div class="card-title" id="title-timer">مؤقت التركيز الإنجازي (بومودورو)</div>
+                <div class="timer-display" id="timer-string">25:00</div>
+                <div class="timer-buttons">
